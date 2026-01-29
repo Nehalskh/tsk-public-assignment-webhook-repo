@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>GitHub Events Tracker</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 820px; margin: 30px auto; padding: 0 16px; }
+    .meta { color:#666; margin: 8px 0 18px; }
+    .card { border: 1px solid #e5e5e5; border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; }
+    .tag { display:inline-block; font-size:12px; padding: 3px 8px; border-radius: 999px; border:1px solid #ddd; margin-bottom:8px; }
+    .empty { color:#666; padding: 20px; border: 1px dashed #ccc; border-radius: 12px; }
+  </style>
+</head>
+<body>
+  <h2>Latest GitHub Repo Events</h2>
+  <div class="meta">Auto-refresh every 15 seconds</div>
+
+  <div id="container"></div>
+
+  <script>
+    function formatEvent(e) {
+      if (e.action === "PUSH") {
+        return `${e.author} pushed to "${e.to_branch}" on ${e.timestamp}`;
+      }
+      if (e.action === "PULL_REQUEST") {
+        return `${e.author} submitted a pull request from "${e.from_branch}" to "${e.to_branch}" on ${e.timestamp}`;
+      }
+      if (e.action === "MERGE") {
+        return `${e.author} merged branch "${e.from_branch}" to "${e.to_branch}" on ${e.timestamp}`;
+      }
+      return "Unknown event";
+    }
+
+    async function loadEvents() {
+      const res = await fetch("/events");
+      const data = await res.json();
+
+      const container = document.getElementById("container");
+      container.innerHTML = "";
+
+      if (!data.length) {
+        container.innerHTML = `<div class="empty">No events yet. Do a push / PR / merge in action-repo.</div>`;
+        return;
+      }
+
+      data.forEach(e => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `<div class="tag">${e.action}</div><div>${formatEvent(e)}</div>`;
+        container.appendChild(div);
+      });
+    }
+
+    loadEvents();
+    setInterval(loadEvents, 15000);
+  </script>
+</body>
+</html>
