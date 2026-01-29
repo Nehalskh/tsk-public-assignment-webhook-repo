@@ -4,7 +4,7 @@ This project receives GitHub webhook events (Push, Pull Request, Merge), stores 
 
 ---
 
-## ✅ Features
+##  Features
 
 - Receives GitHub webhook events:
   - **PUSH**
@@ -21,7 +21,7 @@ This project receives GitHub webhook events (Push, Pull Request, Merge), stores 
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - Python (Flask)
 - MongoDB (Local)
@@ -30,5 +30,5 @@ This project receives GitHub webhook events (Push, Pull Request, Merge), stores 
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
